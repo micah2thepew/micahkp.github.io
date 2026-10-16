@@ -111,8 +111,8 @@ summary_columns = [
 df[summary_columns].head()
 ```
 
-### Conclusion: Try it with another client
+### Conclusion: Put the features to work
 
 We have turned six monthly payment-status values into a late-month count and a measure of how delays changed over time. We also compared average bill amounts across the same two periods. Each feature has a specific meaning, which makes the resulting table easier to inspect than the original monthly columns alone. None of these calculations uses `default payment next month`, so the summaries describe information available before that outcome.
 
-**Try this next:** change the client ID in Step 3 from `1` to `2`. Before reading the calculated features, look at the six payment-status values and predict how many late months the client has and whether `late_rate_change` will be positive, negative, or zero. Then compare your answer with the code output. If you build more features later, write down which months each one uses so your results remain easy to explain.
+**Try this next:** when you are ready to build a default-prediction model, compare two versions using the same train/test split. Give one model the original monthly payment-status and bill-amount columns; give the other those same columns plus `late_months_6m`, `late_rate_change`, and `bill_change`. Evaluate both on the same held-out clients with the same metric. The engineered features make frequency and recent changes explicit for the model. If the second version performs better, you have evidence that those summaries helped; if it does not, try a different summary and compare again.
