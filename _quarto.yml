@@ -2,6 +2,8 @@ project:
   type: website
   output-dir: docs
 
+jupyter: micahkp-github-io
+
 website:
   title: "Micah Pew Portfolio"
   navbar:
@@ -18,6 +20,5 @@ format:
       - brand
     css: styles.css
     toc: true
-
 
 

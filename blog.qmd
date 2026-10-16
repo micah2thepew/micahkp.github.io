@@ -2,4 +2,76 @@
 title: "Blog"
 ---
 
-## Tutorial
+
+
+## From Monthly Payments to Meaningful Features: A pandas Tutorial
+
+### Introduction
+Each client in this dataset has six months of payment history, but the monthly columns can make it hard to spot patterns at a glance. In this tutorial, we’ll use pandas to turn that history into a few interpretable features, such as the number of late-payment months and whether late payments became more common recently. Feature engineering means creating useful new variables from data that’s already available. These summaries make patterns easier to explore and can serve as inputs for a model later.
+
+### Step 1: Put the payment months in order
+
+Each row in this dataset represents one client. The payment-status columns cover six months, but their names can be confusing: `PAY_0` is the most recent month, while `PAY_6` is the earliest. I’ll list them from oldest to newest so it’s easier to compare earlier payment behavior with recent behavior.
+
+```{python}
+import pandas as pd
+
+df = pd.read_excel("data/default of credit card clients.xls", header=1)
+df.columns = df.columns.str.strip()
+
+print(df.shape)
+print(df.columns.tolist())
+df.head()
+```
+
+```{python}
+payment_cols = ["PAY_6", "PAY_5", "PAY_4", "PAY_3", "PAY_2", "PAY_0"]
+earlier_cols = ["PAY_6", "PAY_5", "PAY_4"]
+recent_cols = ["PAY_3", "PAY_2", "PAY_0"]
+
+late = df[payment_cols].gt(0)
+df["late_months_6m"] = late.sum(axis=1)
+
+df["late_rate_earlier3"] = df[earlier_cols].gt(0).mean(axis=1)
+df["late_rate_recent3"] = df[recent_cols].gt(0).mean(axis=1)
+df["late_rate_change"] = (
+    df["late_rate_recent3"] - df["late_rate_earlier3"]
+)
+```
+
+A payment-status value greater than zero indicates a late payment. Use df[payment_cols].gt(0) to check each month; pandas returns a table of True and False values, where True marks a late month. Then .sum(axis=1) counts the True values across each client’s row, giving the number of late-payment months. To see whether delays became more common, subtract the late-payment rate in the earlier three months from the rate in the recent three months. A positive result means delays were more frequent recently, a negative result means they were more frequent earlier, and zero means the rates were the same.
+
+```{python}
+raw_columns = ["ID"] + payment_cols
+feature_columns = [
+    "ID",
+    "late_months_6m",
+    "late_rate_earlier3",
+    "late_rate_recent3",
+    "late_rate_change",
+]
+
+client_one = df.loc[df["ID"] == 1]
+
+print("Original payment-status values:")
+print(client_one[raw_columns].to_string(index=False))
+
+print("\nFeatures created from those values:")
+print(client_one[feature_columns].round(2).to_string(index=False))
+```
+
+For client 1, late_months_6m is 2: two of the six payment-status values indicate a delay. Both delays occurred in the recent three months. The earlier late-payment rate is 0, while the recent rate is about 0.67, so late_rate_change is positive. The new columns make that shift easier to see than the six original values alone.
+
+The dataset also records each client's bill amount for the same six months. I'll calculate the average for the earlier three months and the recent three months, then subtract them. This creates one number that describes the change in bill amount.
+
+```{python}
+earlier_bills = ["BILL_AMT6", "BILL_AMT5", "BILL_AMT4"]
+recent_bills = ["BILL_AMT3", "BILL_AMT2", "BILL_AMT1"]
+
+df["avg_bill_earlier3"] = df[earlier_bills].mean(axis=1)
+df["avg_bill_recent3"] = df[recent_bills].mean(axis=1)
+
+df["bill_change"] = (df["avg_bill_recent3"] - df["avg_bill_earlier3"])
+```
+
+A positive bill_change means that the recent average bill was higher, while a negative value means it was lower. This feature doesn't describe either result as good or bad credit risk, it only describes a change.
