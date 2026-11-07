@@ -224,7 +224,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="set-up-the-searches" class="level3">
 <h3 class="anchored" data-anchor-id="set-up-the-searches">Set up the searches</h3>
 <p>First, define the eight search phrases and record when the collection starts. The dictionary will hold one record per app ID.</p>
-<div id="694c339e" class="cell" data-execution_count="1">
+<div id="0c825b87" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime, timezone</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
@@ -251,7 +251,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="request-one-set-of-results" class="level3">
 <h3 class="anchored" data-anchor-id="request-one-set-of-results">Request one set of results</h3>
 <p>This function sends a GET request for one search phrase. The parameters choose U.S. software results and request up to 50 apps; <code>raise_for_status()</code> stops on an HTTP error.</p>
-<div id="d3e33461" class="cell" data-execution_count="2">
+<div id="d840808f" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fetch_results(term):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"https://itunes.apple.com/search"</span>,</span>
@@ -270,7 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="select-the-fields" class="level3">
 <h3 class="anchored" data-anchor-id="select-the-fields">Select the fields</h3>
 <p>Each API result contains many fields. This helper keeps the app ID, name, developer, ratings, price, and dates needed for the analysis.</p>
-<div id="724db491" class="cell" data-execution_count="3">
+<div id="16e97a2e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_record(app, collected_at):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"app_id"</span>: app[<span class="st">"trackId"</span>],</span>
@@ -290,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="combine-results-without-duplicate-apps" class="level3">
 <h3 class="anchored" data-anchor-id="combine-results-without-duplicate-apps">Combine results without duplicate apps</h3>
 <p>The outer loop repeats the search for each phrase. The inner loop keeps Health &amp; Fitness apps and records every phrase that found an app. A three-second wait spaces out the requests.</p>
-<div id="575c8d9f" class="cell" data-execution_count="4">
+<div id="a070ee11" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> term <span class="kw">in</span> SEARCH_TERMS:</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> fetch_results(term)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -316,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="save-the-first-csv" class="level3">
 <h3 class="anchored" data-anchor-id="save-the-first-csv">Save the first CSV</h3>
 <p>Sets are useful for collecting unique search terms, but CSV cells need text. The final block joins those terms, builds a pandas table, and writes the initial dataset.</p>
-<div id="5dd3f7bd" class="cell" data-execution_count="5">
+<div id="7edad82f" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the sets of search terms into text that fits in a CSV file.</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> app <span class="kw">in</span> apps_by_id.values():</span>
@@ -336,8 +336,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="turning-search-results-into-analysis-ready-features" class="level2">
 <h2 class="anchored" data-anchor-id="turning-search-results-into-analysis-ready-features">Turning search results into analysis-ready features</h2>
-<p>After removing repeated app IDs, <strong>42 apps matched more than one search phrase</strong>. To make one genre label per app for the charts, I used a fixed priority order. When an app matched <em>fitness tracker</em> and another phrase, I dropped <em>fitness tracker</em> as a possible label; when multiple phrases remained, I chose the first one in the priority list. For example, <em>weightlifting</em> takes priority over <em>strength training</em>. This is my classification, not an App Store genre. I kept both Apple’s original genre and all matched search terms so readers can inspect the choice.</p>
-<div id="0f75483e" class="cell" data-execution_count="6">
+<p>After removing repeated app IDs, 42 apps matched more than one search phrase. To make one genre label per app for the charts, I used a fixed priority order. When an app matched <em>fitness tracker</em> and another phrase, I dropped <em>fitness tracker</em> as a possible label; when multiple phrases remained, I chose the first one in the priority list. For example, <em>weightlifting</em> takes priority over <em>strength training</em>. This is my classification, not an App Store genre. I kept both Apple’s original genre and all matched search terms so readers can inspect the choice.</p>
+<div id="97660e07" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/fitness_apps_initial.csv"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.rename(columns<span class="op">=</span>{</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"genre"</span>: <span class="st">"apple_genre"</span>,</span>
@@ -359,7 +359,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"genre"</span>] <span class="op">=</span> df[<span class="st">"matched_search_terms"</span>].<span class="bu">apply</span>(choose_genre)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>I converted the three dates to UTC, then subtracted the release and update dates from the collection date. The resulting <code>app_age_days</code> and <code>days_since_update</code> columns are numeric features. I also marked apps with at least one rating, because an app with no ratings should not contribute a zero to an average rating.</p>
-<div id="7479287f" class="cell" data-execution_count="7">
+<div id="b9b64f7c" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> column <span class="kw">in</span> [<span class="st">"collected_at"</span>, <span class="st">"release_date"</span>, <span class="st">"latest_update"</span>]:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    df[column] <span class="op">=</span> pd.to_datetime(df[column], utc<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -377,10 +377,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="exploring-the-fitness-app-sample" class="level2">
 <h2 class="anchored" data-anchor-id="exploring-the-fitness-app-sample">Exploring the fitness-app sample</h2>
-<p>I collected apps returned by eight fitness-related searches through <a href="https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/SearchExamples.html">Apple’s Search API</a> on November 6, 2026. After keeping Apple’s <em>Health &amp; Fitness</em> category and removing repeated app IDs, the dataset contains <strong>304 unique apps</strong>. I assigned each app one genre based on the search terms that found it. These labels are useful for comparing groups, but they are my own classifications; Apple’s category is <em>Health &amp; Fitness</em> for every row. Eight apps have no user ratings, so I excluded them from rating averages while keeping them in the dataset.</p>
+<p>I collected apps returned by eight fitness-related searches through <a href="https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/SearchExamples.html">Apple’s Search API</a> on November 6, 2026. After keeping Apple’s <em>Health &amp; Fitness</em> category and removing repeated app IDs, the dataset contains 304 unique apps. I assigned each app one genre based on the search terms that found it. These labels are useful for comparing groups, but they are my own classifications; Apple’s category is <em>Health &amp; Fitness</em> for every row. Eight apps have no user ratings, so I excluded them from rating averages while keeping them in the dataset.</p>
 <section id="how-do-average-ratings-compare" class="level3">
 <h3 class="anchored" data-anchor-id="how-do-average-ratings-compare">How do average ratings compare?</h3>
-<p>The 296 rated apps generally have high scores. Yoga has the highest mean rating (<strong>4.81 stars</strong>), followed closely by running (<strong>4.80</strong>). Cycling workout has the lowest mean (<strong>4.64</strong>). The range between the highest and lowest genre means is less than <strong>0.17 stars</strong>, so the chart shows modest differences rather than a large quality gap. Each app contributes one rating to its genre’s average, regardless of how many users rated it.</p>
+<p>The 296 rated apps generally have high scores. Yoga has the highest mean rating (4.81 stars), followed closely by running (4.80). Cycling workout has the lowest mean (4.64). The range between the highest and lowest genre means is less than 0.17 stars, so the chart shows modest differences rather than a large quality gap. Each app contributes one rating to its genre’s average, regardless of how many users rated it.</p>
 <div id="code-average-rating" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -408,7 +408,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="are-recently-updated-apps-rated-more-highly" class="level3">
 <h3 class="anchored" data-anchor-id="are-recently-updated-apps-rated-more-highly">Are recently updated apps rated more highly?</h3>
-<p>The next chart plots each genre’s mean days since its latest app update against its mean rating. Fitness-tracker apps have the most recent updates on average, about <strong>30 days</strong> before collection. Running and weightlifting apps average about <strong>355–357 days</strong> since update, yet their average ratings differ. Genre averages alone do not show a simple relationship.</p>
+<p>The next chart plots each genre’s mean days since its latest app update against its mean rating. Fitness-tracker apps have the most recent updates on average, about 30 days before collection. Running and weightlifting apps average about 355–357 days since update, yet their average ratings differ. Genre averages alone do not show a simple relationship.</p>
 <div id="code-update-recency" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>genre_means <span class="op">=</span> rated.groupby(<span class="st">"genre"</span>)[[<span class="st">"days_since_update"</span>, <span class="st">"rating"</span>]].mean()</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(genre_means.<span class="bu">round</span>(<span class="dv">2</span>))</span>
@@ -438,11 +438,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>Genre averages for update recency and rating.</figcaption>
 </figure>
 </div>
-<p>At the individual-app level, the Pearson correlation between days since update and rating is <strong>−0.36</strong> among all 296 rated apps. When I limit the comparison to the <strong>231 apps with at least 100 ratings</strong>, it weakens to <strong>−0.11</strong>. Apps with very few ratings can make the apparent pattern stronger. This comparison describes an association in this sample; it does not show that publishing an update changes a rating.</p>
+<p>At the individual-app level, the Pearson correlation between days since update and rating is −0.36 among all 296 rated apps. When I limit the comparison to the 231 apps with at least 100 ratings, it weakens to −0.11. Apps with very few ratings can make the apparent pattern stronger. This comparison describes an association in this sample; it does not show that publishing an update changes a rating.</p>
 </section>
 <section id="when-were-these-apps-first-released" class="level3">
 <h3 class="anchored" data-anchor-id="when-were-these-apps-first-released">When were these apps first released?</h3>
-<p>The apps’ original release dates span <strong>2008 through 2026</strong>. Of the apps currently in the sample, <strong>30</strong> were first released in 2020 and <strong>27</strong> in 2026. Each panel shows one genre, making its year-by-year pattern easier to see.</p>
+<p>The apps’ original release dates span 2008 through 2026. Of the apps currently in the sample, 30 were first released in 2020 and 27 in 2026. Each panel shows one genre, making its year-by-year pattern easier to see.</p>
 <div id="code-release-years" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"release_year"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"release_date"</span>], utc<span class="op">=</span><span class="va">True</span>).dt.year</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>release_counts <span class="op">=</span> (</span>
@@ -470,7 +470,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>Sampled apps by original release year, with one panel per assigned genre.</figcaption>
 </figure>
 </div>
-<p>The stacked bars show the <strong>total number of sampled apps</strong> released in each year. The colored sections show how much each assigned genre contributes to that total; the line charts above make it easier to follow one genre across years.</p>
+<p>The stacked bars show the total number of sampled apps released in each year. The colored sections show how much each assigned genre contributes to that total; the line charts above make it easier to follow one genre across years.</p>
 <div id="code-release-years-stacked" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">5</span>))</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>release_counts.plot.bar(stacked<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax, width<span class="op">=</span><span class="fl">0.85</span>)</span>
@@ -487,13 +487,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>Sampled apps by original release year and assigned genre.</figcaption>
 </figure>
 </div>
-<p>This is a history of <strong>apps returned by my searches</strong>, not a count of every fitness app launched in each year. Older apps that disappeared from the store or did not appear in these search results are absent. The 2026 count also covers only the year through the collection date.</p>
+<p>This is a history of apps returned by my searches, not a count of every fitness app launched in each year. Older apps that disappeared from the store or did not appear in these search results are absent. The 2026 count also covers only the year through the collection date.</p>
 </section>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>Among the apps in this sample, original releases generally increased through 2020, when <strong>30</strong> of the currently listed apps first appeared. Pilates contributed <strong>8</strong> of those apps, more than any other assigned genre that year. The count fell in the following years before rising again in 2025 and 2026. Pandemic gym closures and interest in at-home exercise might help explain the 2020 peak, but these search results cannot establish its cause or describe every fitness app released in those years.</p>
-<p>Average ratings are similar across genres, ranging from <strong>4.64 to 4.81 stars</strong> among rated apps. The association between update recency and rating is weak when I focus on apps with at least 100 ratings (<strong>r = −0.11</strong>), so a recent update alone is not a useful signal of a higher rating in this sample. A useful next step would be to collect the same searches at a later date and compare which apps and ratings change, using the <a href="#how-i-collected-the-apps">collection code</a> as a starting point.</p>
+<p>Among the apps in this sample, original releases generally increased through 2020, when 30 of the currently listed apps first appeared. Pilates contributed 8 of those apps, more than any other assigned genre that year. The count fell in the following years before rising again in 2025 and 2026. Pandemic gym closures and interest in at-home exercise might help explain the 2020 peak, but these search results cannot establish its cause or describe every fitness app released in those years.</p>
+<p>Average ratings are similar across genres, ranging from 4.64 to 4.81 stars among rated apps. The association between update recency and rating is weak when I focus on apps with at least 100 ratings (r = −0.11), so a recent update alone is not a useful signal of a higher rating in this sample. A useful next step would be to collect the same searches at a later date and compare which apps and ratings change, using the <a href="#how-i-collected-the-apps">collection code</a> as a starting point.</p>
 
 
 </section>

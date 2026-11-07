@@ -12,11 +12,11 @@ Each client in this dataset has six months of payment history, but the monthly c
 
 Each row represents one client. We’ll turn six months of payment information into a few features that are easier to compare:
 
-- **Put the months in order.** The payment-status columns run from `PAY_6` (earliest) to `PAY_0` (most recent). The [UCI dataset description](https://archive.ics.uci.edu/dataset/350/defaultofcreditcardclients) explains what each column records.
-- **Count late months.** Mark payment-status values greater than zero as delays, then count the delayed months for each client.
-- **Compare earlier and recent behavior.** Split the six months into two groups of three and compare their late-payment rates.
-- **Summarize bill amounts.** Calculate the average bill in each three-month period and find the difference.
-- **Keep the outcome separate.** Do not use `default payment next month` to calculate features from the previous six months.
+- Put the months in order. The payment-status columns run from `PAY_6` (earliest) to `PAY_0` (most recent). The [UCI dataset description](https://archive.ics.uci.edu/dataset/350/defaultofcreditcardclients) explains what each column records.
+- Count late months. Mark payment-status values greater than zero as delays, then count the delayed months for each client.
+- Compare earlier and recent behavior. Split the six months into two groups of three and compare their late-payment rates.
+- Summarize bill amounts. Calculate the average bill in each three-month period and find the difference.
+- Keep the outcome separate. Do not use `default payment next month` to calculate features from the previous six months.
 
 ### Step 1: Load the data and identify the months
 
@@ -115,7 +115,7 @@ df[summary_columns].head()
 
 We have turned six monthly payment-status values into a late-month count and a measure of how delays changed over time. We also compared average bill amounts across the same two periods. Each feature has a specific meaning, which makes the resulting table easier to inspect than the original monthly columns alone. None of these calculations uses `default payment next month`, so the summaries describe information available before that outcome.
 
-**Try this next:** when you are ready to build a default-prediction model, compare two versions using the same train/test split. Give one model the original monthly payment-status and bill-amount columns; give the other those same columns plus `late_months_6m`, `late_rate_change`, and `bill_change`. Evaluate both on the same held-out clients with the same metric. The engineered features make frequency and recent changes explicit for the model. If the second version performs better, you have evidence that those summaries helped; if it does not, try a different summary and compare again.
+Try this next: when you are ready to build a default-prediction model, compare two versions using the same train/test split. Give one model the original monthly payment-status and bill-amount columns; give the other those same columns plus `late_months_6m`, `late_rate_change`, and `bill_change`. Evaluate both on the same held-out clients with the same metric. The engineered features make frequency and recent changes explicit for the model. If the second version performs better, you have evidence that those summaries helped; if it does not, try a different summary and compare again.
 
 
 ## More data science work

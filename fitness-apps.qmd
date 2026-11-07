@@ -140,7 +140,7 @@ print(df[["name", "rating", "rating_count", "search_terms"]].head())
 
 ## Turning search results into analysis-ready features
 
-After removing repeated app IDs, **42 apps matched more than one search phrase**. To make one genre label per app for the charts, I used a fixed priority order. When an app matched *fitness tracker* and another phrase, I dropped *fitness tracker* as a possible label; when multiple phrases remained, I chose the first one in the priority list. For example, *weightlifting* takes priority over *strength training*. This is my classification, not an App Store genre. I kept both Apple's original genre and all matched search terms so readers can inspect the choice.
+After removing repeated app IDs, 42 apps matched more than one search phrase. To make one genre label per app for the charts, I used a fixed priority order. When an app matched *fitness tracker* and another phrase, I dropped *fitness tracker* as a possible label; when multiple phrases remained, I chose the first one in the priority list. For example, *weightlifting* takes priority over *strength training*. This is my classification, not an App Store genre. I kept both Apple's original genre and all matched search terms so readers can inspect the choice.
 
 ```{python}
 #| eval: false
@@ -186,11 +186,11 @@ I used [Apple's documented Search API](https://performance-partners.apple.com/se
 
 ## Exploring the fitness-app sample
 
-I collected apps returned by eight fitness-related searches through [Apple's Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/SearchExamples.html) on November 6, 2026. After keeping Apple's *Health & Fitness* category and removing repeated app IDs, the dataset contains **304 unique apps**. I assigned each app one genre based on the search terms that found it. These labels are useful for comparing groups, but they are my own classifications; Apple's category is *Health & Fitness* for every row. Eight apps have no user ratings, so I excluded them from rating averages while keeping them in the dataset.
+I collected apps returned by eight fitness-related searches through [Apple's Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/SearchExamples.html) on November 6, 2026. After keeping Apple's *Health & Fitness* category and removing repeated app IDs, the dataset contains 304 unique apps. I assigned each app one genre based on the search terms that found it. These labels are useful for comparing groups, but they are my own classifications; Apple's category is *Health & Fitness* for every row. Eight apps have no user ratings, so I excluded them from rating averages while keeping them in the dataset.
 
 ### How do average ratings compare?
 
-The 296 rated apps generally have high scores. Yoga has the highest mean rating (**4.81 stars**), followed closely by running (**4.80**). Cycling workout has the lowest mean (**4.64**). The range between the highest and lowest genre means is less than **0.17 stars**, so the chart shows modest differences rather than a large quality gap. Each app contributes one rating to its genre's average, regardless of how many users rated it.
+The 296 rated apps generally have high scores. Yoga has the highest mean rating (4.81 stars), followed closely by running (4.80). Cycling workout has the lowest mean (4.64). The range between the highest and lowest genre means is less than 0.17 stars, so the chart shows modest differences rather than a large quality gap. Each app contributes one rating to its genre's average, regardless of how many users rated it.
 
 ```{python}
 #| label: code-average-rating
@@ -220,7 +220,7 @@ plt.show()
 
 ### Are recently updated apps rated more highly?
 
-The next chart plots each genre's mean days since its latest app update against its mean rating. Fitness-tracker apps have the most recent updates on average, about **30 days** before collection. Running and weightlifting apps average about **355–357 days** since update, yet their average ratings differ. Genre averages alone do not show a simple relationship.
+The next chart plots each genre's mean days since its latest app update against its mean rating. Fitness-tracker apps have the most recent updates on average, about 30 days before collection. Running and weightlifting apps average about 355–357 days since update, yet their average ratings differ. Genre averages alone do not show a simple relationship.
 
 ```{python}
 #| label: code-update-recency
@@ -252,11 +252,11 @@ plt.show()
 ![Genre averages for update recency and rating.](images/fitness-apps/update_recency_vs_rating.png){fig-alt="Scatterplot of eight genre averages; ratings range from 4.64 to 4.81 stars with no simple trend across update recency."}
 
 
-At the individual-app level, the Pearson correlation between days since update and rating is **−0.36** among all 296 rated apps. When I limit the comparison to the **231 apps with at least 100 ratings**, it weakens to **−0.11**. Apps with very few ratings can make the apparent pattern stronger. This comparison describes an association in this sample; it does not show that publishing an update changes a rating.
+At the individual-app level, the Pearson correlation between days since update and rating is −0.36 among all 296 rated apps. When I limit the comparison to the 231 apps with at least 100 ratings, it weakens to −0.11. Apps with very few ratings can make the apparent pattern stronger. This comparison describes an association in this sample; it does not show that publishing an update changes a rating.
 
 ### When were these apps first released?
 
-The apps' original release dates span **2008 through 2026**. Of the apps currently in the sample, **30** were first released in 2020 and **27** in 2026. Each panel shows one genre, making its year-by-year pattern easier to see.
+The apps' original release dates span 2008 through 2026. Of the apps currently in the sample, 30 were first released in 2020 and 27 in 2026. Each panel shows one genre, making its year-by-year pattern easier to see.
 
 ```{python}
 #| label: code-release-years
@@ -285,7 +285,7 @@ plt.show()
 
 ![Sampled apps by original release year, with one panel per assigned genre.](images/fitness-apps/release_year_by_genre.png){fig-alt="Eight small line charts show annual counts of sampled apps, one chart per assigned genre, from 2008 through 2026."}
 
-The stacked bars show the **total number of sampled apps** released in each year. The colored sections show how much each assigned genre contributes to that total; the line charts above make it easier to follow one genre across years.
+The stacked bars show the total number of sampled apps released in each year. The colored sections show how much each assigned genre contributes to that total; the line charts above make it easier to follow one genre across years.
 
 ```{python}
 #| label: code-release-years-stacked
@@ -305,10 +305,10 @@ plt.show()
 
 
 
-This is a history of **apps returned by my searches**, not a count of every fitness app launched in each year. Older apps that disappeared from the store or did not appear in these search results are absent. The 2026 count also covers only the year through the collection date.
+This is a history of apps returned by my searches, not a count of every fitness app launched in each year. Older apps that disappeared from the store or did not appear in these search results are absent. The 2026 count also covers only the year through the collection date.
 
 ## Conclusion
 
-Among the apps in this sample, original releases generally increased through 2020, when **30** of the currently listed apps first appeared. Pilates contributed **8** of those apps, more than any other assigned genre that year. The count fell in the following years before rising again in 2025 and 2026. Pandemic gym closures and interest in at-home exercise might help explain the 2020 peak, but these search results cannot establish its cause or describe every fitness app released in those years.
+Among the apps in this sample, original releases generally increased through 2020, when 30 of the currently listed apps first appeared. Pilates contributed 8 of those apps, more than any other assigned genre that year. The count fell in the following years before rising again in 2025 and 2026. Pandemic gym closures and interest in at-home exercise might help explain the 2020 peak, but these search results cannot establish its cause or describe every fitness app released in those years.
 
-Average ratings are similar across genres, ranging from **4.64 to 4.81 stars** among rated apps. The association between update recency and rating is weak when I focus on apps with at least 100 ratings (**r = −0.11**), so a recent update alone is not a useful signal of a higher rating in this sample. A useful next step would be to collect the same searches at a later date and compare which apps and ratings change, using the [collection code](#how-i-collected-the-apps) as a starting point.
+Average ratings are similar across genres, ranging from 4.64 to 4.81 stars among rated apps. The association between update recency and rating is weak when I focus on apps with at least 100 ratings (r = −0.11), so a recent update alone is not a useful signal of a higher rating in this sample. A useful next step would be to collect the same searches at a later date and compare which apps and ratings change, using the [collection code](#how-i-collected-the-apps) as a starting point.
