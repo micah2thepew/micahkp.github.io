@@ -12,6 +12,8 @@ website:
         text: Home
       - about.qmd
       - blog.qmd
+      - href: fitness-apps.qmd
+        text: Fitness Apps
 
 format:
   html:

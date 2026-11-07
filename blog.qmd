@@ -116,3 +116,8 @@ df[summary_columns].head()
 We have turned six monthly payment-status values into a late-month count and a measure of how delays changed over time. We also compared average bill amounts across the same two periods. Each feature has a specific meaning, which makes the resulting table easier to inspect than the original monthly columns alone. None of these calculations uses `default payment next month`, so the summaries describe information available before that outcome.
 
 **Try this next:** when you are ready to build a default-prediction model, compare two versions using the same train/test split. Give one model the original monthly payment-status and bill-amount columns; give the other those same columns plus `late_months_6m`, `late_rate_change`, and `bill_change`. Evaluate both on the same held-out clients with the same metric. The engineered features make frequency and recent changes explicit for the model. If the second version performs better, you have evidence that those summaries helped; if it does not, try a different summary and compare again.
+
+
+## More data science work
+
+Read my [fitness-app data acquisition project](fitness-apps.qmd) to see how I collected and explored App Store data with Python.

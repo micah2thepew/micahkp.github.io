@@ -2,4 +2,7 @@
 title: "Micah Pew Portfolio"
 ---
 
+## Blog posts
 
+- [Which Fitness Apps Stand Out in the App Store?](fitness-apps.qmd) — An Apple Search API data-acquisition project comparing fitness-app genres, ratings, update recency, and release dates.
+- [From Monthly Payments to Meaningful Features](blog.qmd) — A pandas tutorial on turning six months of payment history into useful features.
