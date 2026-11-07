@@ -33,7 +33,7 @@ print(df.columns.tolist())
 df.head()
 ```
 
-The data is arranged in *wide* form: each client has one row, and separate columns hold the monthly values. That means we can calculate a summary across columns within each row. The payment-status names are unusual: there is no `PAY_1`, and `PAY_0` is the most recent month. Listing the actual column names in time order prevents us from accidentally comparing the wrong months.
+The data is arranged in wide form: each client has one row, and separate columns hold the monthly values. That means we can calculate a summary across columns within each row. The payment-status names are unusual: there is no `PAY_1`, and `PAY_0` is the most recent month. Listing the actual column names in time order prevents us from accidentally comparing the wrong months.
 
 ### Step 2: Create late-payment features
 
@@ -54,7 +54,7 @@ df["late_rate_change"] = (
 )
 ```
 
-The `axis=1` argument is important: it tells pandas to work *across columns* for each client, rather than down a column across different clients. `late_months_6m` ranges from 0 to 6. Each three-month late rate ranges from 0 to 1. Subtracting the earlier rate from the recent rate creates `late_rate_change`: a positive value means delays were more frequent recently, a negative value means they were more frequent earlier, and zero means the rates were the same. This describes a pattern; it does not tell us why the pattern occurred.
+The `axis=1` argument is important: it tells pandas to work across columns for each client, rather than down a column across different clients. `late_months_6m` ranges from 0 to 6. Each three-month late rate ranges from 0 to 1. Subtracting the earlier rate from the recent rate creates `late_rate_change`: a positive value means delays were more frequent recently, a negative value means they were more frequent earlier, and zero means the rates were the same. This describes a pattern; it does not tell us why the pattern occurred.
 
 ### Step 3: Check one client's history
 

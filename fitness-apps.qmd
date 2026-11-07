@@ -12,7 +12,7 @@ The [project repository](https://github.com/micah2thepew/fitness-app-analysis) c
 
 ## How I collected the apps
 
-I used [Apple's Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/SearchExamples.html) to gather app metadata. The collection script has five steps, each shown below. Together they request up to 50 U.S. apps for each of eight search phrases, keep results in Apple's *Health & Fitness* category, and use app IDs to avoid duplicate rows.
+I used [Apple's Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/SearchExamples.html) to gather app metadata. The collection script has five steps, each shown below. Together they request up to 50 U.S. apps for each of eight search phrases, keep results in Apple's Health & Fitness category, and use app IDs to avoid duplicate rows.
 
 The data collection script left a 3 second interval between each request to ensure that the API was not overloaded. No personal information from any of the users was collected or displayed.
 
@@ -140,7 +140,7 @@ print(df[["name", "rating", "rating_count", "search_terms"]].head())
 
 ## Turning search results into analysis-ready features
 
-After removing repeated app IDs, 42 apps matched more than one search phrase. To make one genre label per app for the charts, I used a fixed priority order. When an app matched *fitness tracker* and another phrase, I dropped *fitness tracker* as a possible label; when multiple phrases remained, I chose the first one in the priority list. For example, *weightlifting* takes priority over *strength training*. This is my classification, not an App Store genre. I kept both Apple's original genre and all matched search terms so readers can inspect the choice.
+After removing repeated app IDs, 42 apps matched more than one search phrase. To make one genre label per app for the charts, I used a fixed priority order. When an app matched fitness tracker and another phrase, I dropped fitness tracker as a possible label; when multiple phrases remained, I chose the first one in the priority list. For example, weightlifting takes priority over strength training. This is my classification, not an App Store genre. I kept both Apple's original genre and all matched search terms so readers can inspect the choice.
 
 ```{python}
 #| eval: false
@@ -186,7 +186,7 @@ I used [Apple's documented Search API](https://performance-partners.apple.com/se
 
 ## Exploring the fitness-app sample
 
-I collected apps returned by eight fitness-related searches through [Apple's Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/SearchExamples.html) on November 6, 2026. After keeping Apple's *Health & Fitness* category and removing repeated app IDs, the dataset contains 304 unique apps. I assigned each app one genre based on the search terms that found it. These labels are useful for comparing groups, but they are my own classifications; Apple's category is *Health & Fitness* for every row. Eight apps have no user ratings, so I excluded them from rating averages while keeping them in the dataset.
+I collected apps returned by eight fitness-related searches through [Apple's Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/SearchExamples.html) on November 6, 2026. After keeping Apple's Health & Fitness category and removing repeated app IDs, the dataset contains 304 unique apps. I assigned each app one genre based on the search terms that found it. These labels are useful for comparing groups, but they are my own classifications; Apple's category is Health & Fitness for every row. Eight apps have no user ratings, so I excluded them from rating averages while keeping them in the dataset.
 
 ### How do average ratings compare?
 

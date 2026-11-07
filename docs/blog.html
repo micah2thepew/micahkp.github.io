@@ -221,7 +221,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-1-load-the-data-and-identify-the-months" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-load-the-data-and-identify-the-months">Step 1: Load the data and identify the months</h3>
 <p>Download the Excel file from the UCI link above and save it in a <code>data</code> folder beside this tutorial. The first spreadsheet row uses generic labels such as <code>X1</code>, while the second has descriptive names such as <code>LIMIT_BAL</code> and <code>PAY_0</code>. Setting <code>header=1</code> tells pandas to use that second row as the column names. We also strip any surrounding spaces from those names and print a preview to check that the file loaded as expected. If pandas asks for an Excel reader, install the <code>xlrd</code> package for this older <code>.xls</code> file.</p>
-<div id="fe8fc421" class="cell" data-execution_count="1">
+<div id="71ac2dd3" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">"data/default of credit card clients.xls"</span>, header<span class="op">=</span><span class="dv">1</span>)</span>
@@ -393,12 +393,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The data is arranged in <em>wide</em> form: each client has one row, and separate columns hold the monthly values. That means we can calculate a summary across columns within each row. The payment-status names are unusual: there is no <code>PAY_1</code>, and <code>PAY_0</code> is the most recent month. Listing the actual column names in time order prevents us from accidentally comparing the wrong months.</p>
+<p>The data is arranged in wide form: each client has one row, and separate columns hold the monthly values. That means we can calculate a summary across columns within each row. The payment-status names are unusual: there is no <code>PAY_1</code>, and <code>PAY_0</code> is the most recent month. Listing the actual column names in time order prevents us from accidentally comparing the wrong months.</p>
 </section>
 <section id="step-2-create-late-payment-features" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-create-late-payment-features">Step 2: Create late-payment features</h3>
 <p>We define the earlier period as the first three months and the recent period as the last three. In the code below, <code>.gt(0)</code> asks whether each payment-status value is greater than zero. It returns <code>True</code> for a delayed month and <code>False</code> otherwise. Since pandas treats <code>True</code> as 1 when calculating a sum, <code>.sum(axis=1)</code> counts late months across each client’s row. Taking the mean of those same Boolean values gives the fraction of months with a delay.</p>
-<div id="c43aab29" class="cell" data-execution_count="2">
+<div id="4fa28068" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>payment_cols <span class="op">=</span> [<span class="st">"PAY_6"</span>, <span class="st">"PAY_5"</span>, <span class="st">"PAY_4"</span>, <span class="st">"PAY_3"</span>, <span class="st">"PAY_2"</span>, <span class="st">"PAY_0"</span>]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>earlier_cols <span class="op">=</span> [<span class="st">"PAY_6"</span>, <span class="st">"PAY_5"</span>, <span class="st">"PAY_4"</span>]</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>recent_cols <span class="op">=</span> [<span class="st">"PAY_3"</span>, <span class="st">"PAY_2"</span>, <span class="st">"PAY_0"</span>]</span>
@@ -412,12 +412,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"late_rate_recent3"</span>] <span class="op">-</span> df[<span class="st">"late_rate_earlier3"</span>]</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The <code>axis=1</code> argument is important: it tells pandas to work <em>across columns</em> for each client, rather than down a column across different clients. <code>late_months_6m</code> ranges from 0 to 6. Each three-month late rate ranges from 0 to 1. Subtracting the earlier rate from the recent rate creates <code>late_rate_change</code>: a positive value means delays were more frequent recently, a negative value means they were more frequent earlier, and zero means the rates were the same. This describes a pattern; it does not tell us why the pattern occurred.</p>
+<p>The <code>axis=1</code> argument is important: it tells pandas to work across columns for each client, rather than down a column across different clients. <code>late_months_6m</code> ranges from 0 to 6. Each three-month late rate ranges from 0 to 1. Subtracting the earlier rate from the recent rate creates <code>late_rate_change</code>: a positive value means delays were more frequent recently, a negative value means they were more frequent earlier, and zero means the rates were the same. This describes a pattern; it does not tell us why the pattern occurred.</p>
 </section>
 <section id="step-3-check-one-clients-history" class="level3">
 <h3 class="anchored" data-anchor-id="step-3-check-one-clients-history">Step 3: Check one client’s history</h3>
 <p>A worked example helps us see where the new numbers come from. The next block selects client 1 by <code>ID</code>, then prints the six original payment-status values beside the features we created. <code>ID</code> identifies the row for inspection; it is not one of our payment-behavior features. The <code>.round(2)</code> call makes the rates easier to read without changing the underlying values.</p>
-<div id="cc9e998b" class="cell" data-execution_count="3">
+<div id="94136c77" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>raw_columns <span class="op">=</span> [<span class="st">"ID"</span>] <span class="op">+</span> payment_cols</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>feature_columns <span class="op">=</span> [</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ID"</span>,</span>
@@ -477,7 +477,7 @@ Features created from those values:
 <section id="step-4-summarize-bill-amounts" class="level3">
 <h3 class="anchored" data-anchor-id="step-4-summarize-bill-amounts">Step 4: Summarize bill amounts</h3>
 <p>The dataset also records each client’s monthly bill amounts. <code>BILL_AMT6</code> is the earliest of the six bill columns, and <code>BILL_AMT1</code> is the most recent. We calculate the average bill for the earlier three months and for the recent three months. Their difference, <code>bill_change</code>, describes how the typical bill amount changed between those periods. This is an amount difference, rather than a percentage, so it still works when an earlier bill is zero.</p>
-<div id="f281c98e" class="cell" data-execution_count="4">
+<div id="cf672c61" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>earlier_bills <span class="op">=</span> [<span class="st">"BILL_AMT6"</span>, <span class="st">"BILL_AMT5"</span>, <span class="st">"BILL_AMT4"</span>]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>recent_bills <span class="op">=</span> [<span class="st">"BILL_AMT3"</span>, <span class="st">"BILL_AMT2"</span>, <span class="st">"BILL_AMT1"</span>]</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -487,7 +487,7 @@ Features created from those values:
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"bill_change"</span>] <span class="op">=</span> df[<span class="st">"avg_bill_recent3"</span>] <span class="op">-</span> df[<span class="st">"avg_bill_earlier3"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A positive <code>bill_change</code> means the recent average was higher; a negative value means it was lower. A larger bill alone does not establish that a client is more likely to default. To inspect the finished features, select a few relevant columns and display the first five clients:</p>
-<div id="253d40c0" class="cell" data-execution_count="5">
+<div id="4393c790" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>summary_columns <span class="op">=</span> [</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ID"</span>, <span class="st">"late_months_6m"</span>, <span class="st">"late_rate_change"</span>,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"avg_bill_earlier3"</span>, <span class="st">"avg_bill_recent3"</span>, <span class="st">"bill_change"</span>,</span>

@@ -219,12 +219,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="how-i-collected-the-apps" class="level2">
 <h2 class="anchored" data-anchor-id="how-i-collected-the-apps">How I collected the apps</h2>
-<p>I used <a href="https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/SearchExamples.html">Apple’s Search API</a> to gather app metadata. The collection script has five steps, each shown below. Together they request up to 50 U.S. apps for each of eight search phrases, keep results in Apple’s <em>Health &amp; Fitness</em> category, and use app IDs to avoid duplicate rows.</p>
+<p>I used <a href="https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/SearchExamples.html">Apple’s Search API</a> to gather app metadata. The collection script has five steps, each shown below. Together they request up to 50 U.S. apps for each of eight search phrases, keep results in Apple’s Health &amp; Fitness category, and use app IDs to avoid duplicate rows.</p>
 <p>The data collection script left a 3 second interval between each request to ensure that the API was not overloaded. No personal information from any of the users was collected or displayed.</p>
 <section id="set-up-the-searches" class="level3">
 <h3 class="anchored" data-anchor-id="set-up-the-searches">Set up the searches</h3>
 <p>First, define the eight search phrases and record when the collection starts. The dictionary will hold one record per app ID.</p>
-<div id="0c825b87" class="cell" data-execution_count="1">
+<div id="55a72737" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime, timezone</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
@@ -251,7 +251,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="request-one-set-of-results" class="level3">
 <h3 class="anchored" data-anchor-id="request-one-set-of-results">Request one set of results</h3>
 <p>This function sends a GET request for one search phrase. The parameters choose U.S. software results and request up to 50 apps; <code>raise_for_status()</code> stops on an HTTP error.</p>
-<div id="d840808f" class="cell" data-execution_count="2">
+<div id="3b4a0b97" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fetch_results(term):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"https://itunes.apple.com/search"</span>,</span>
@@ -270,7 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="select-the-fields" class="level3">
 <h3 class="anchored" data-anchor-id="select-the-fields">Select the fields</h3>
 <p>Each API result contains many fields. This helper keeps the app ID, name, developer, ratings, price, and dates needed for the analysis.</p>
-<div id="16e97a2e" class="cell" data-execution_count="3">
+<div id="9e43669d" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_record(app, collected_at):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"app_id"</span>: app[<span class="st">"trackId"</span>],</span>
@@ -290,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="combine-results-without-duplicate-apps" class="level3">
 <h3 class="anchored" data-anchor-id="combine-results-without-duplicate-apps">Combine results without duplicate apps</h3>
 <p>The outer loop repeats the search for each phrase. The inner loop keeps Health &amp; Fitness apps and records every phrase that found an app. A three-second wait spaces out the requests.</p>
-<div id="a070ee11" class="cell" data-execution_count="4">
+<div id="bc9291f4" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> term <span class="kw">in</span> SEARCH_TERMS:</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> fetch_results(term)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -316,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="save-the-first-csv" class="level3">
 <h3 class="anchored" data-anchor-id="save-the-first-csv">Save the first CSV</h3>
 <p>Sets are useful for collecting unique search terms, but CSV cells need text. The final block joins those terms, builds a pandas table, and writes the initial dataset.</p>
-<div id="7edad82f" class="cell" data-execution_count="5">
+<div id="cc65ad5d" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the sets of search terms into text that fits in a CSV file.</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> app <span class="kw">in</span> apps_by_id.values():</span>
@@ -336,8 +336,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="turning-search-results-into-analysis-ready-features" class="level2">
 <h2 class="anchored" data-anchor-id="turning-search-results-into-analysis-ready-features">Turning search results into analysis-ready features</h2>
-<p>After removing repeated app IDs, 42 apps matched more than one search phrase. To make one genre label per app for the charts, I used a fixed priority order. When an app matched <em>fitness tracker</em> and another phrase, I dropped <em>fitness tracker</em> as a possible label; when multiple phrases remained, I chose the first one in the priority list. For example, <em>weightlifting</em> takes priority over <em>strength training</em>. This is my classification, not an App Store genre. I kept both Apple’s original genre and all matched search terms so readers can inspect the choice.</p>
-<div id="97660e07" class="cell" data-execution_count="6">
+<p>After removing repeated app IDs, 42 apps matched more than one search phrase. To make one genre label per app for the charts, I used a fixed priority order. When an app matched fitness tracker and another phrase, I dropped fitness tracker as a possible label; when multiple phrases remained, I chose the first one in the priority list. For example, weightlifting takes priority over strength training. This is my classification, not an App Store genre. I kept both Apple’s original genre and all matched search terms so readers can inspect the choice.</p>
+<div id="79797072" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/fitness_apps_initial.csv"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.rename(columns<span class="op">=</span>{</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"genre"</span>: <span class="st">"apple_genre"</span>,</span>
@@ -359,7 +359,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"genre"</span>] <span class="op">=</span> df[<span class="st">"matched_search_terms"</span>].<span class="bu">apply</span>(choose_genre)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>I converted the three dates to UTC, then subtracted the release and update dates from the collection date. The resulting <code>app_age_days</code> and <code>days_since_update</code> columns are numeric features. I also marked apps with at least one rating, because an app with no ratings should not contribute a zero to an average rating.</p>
-<div id="b9b64f7c" class="cell" data-execution_count="7">
+<div id="78df47dc" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> column <span class="kw">in</span> [<span class="st">"collected_at"</span>, <span class="st">"release_date"</span>, <span class="st">"latest_update"</span>]:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    df[column] <span class="op">=</span> pd.to_datetime(df[column], utc<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -377,7 +377,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="exploring-the-fitness-app-sample" class="level2">
 <h2 class="anchored" data-anchor-id="exploring-the-fitness-app-sample">Exploring the fitness-app sample</h2>
-<p>I collected apps returned by eight fitness-related searches through <a href="https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/SearchExamples.html">Apple’s Search API</a> on November 6, 2026. After keeping Apple’s <em>Health &amp; Fitness</em> category and removing repeated app IDs, the dataset contains 304 unique apps. I assigned each app one genre based on the search terms that found it. These labels are useful for comparing groups, but they are my own classifications; Apple’s category is <em>Health &amp; Fitness</em> for every row. Eight apps have no user ratings, so I excluded them from rating averages while keeping them in the dataset.</p>
+<p>I collected apps returned by eight fitness-related searches through <a href="https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/SearchExamples.html">Apple’s Search API</a> on November 6, 2026. After keeping Apple’s Health &amp; Fitness category and removing repeated app IDs, the dataset contains 304 unique apps. I assigned each app one genre based on the search terms that found it. These labels are useful for comparing groups, but they are my own classifications; Apple’s category is Health &amp; Fitness for every row. Eight apps have no user ratings, so I excluded them from rating averages while keeping them in the dataset.</p>
 <section id="how-do-average-ratings-compare" class="level3">
 <h3 class="anchored" data-anchor-id="how-do-average-ratings-compare">How do average ratings compare?</h3>
 <p>The 296 rated apps generally have high scores. Yoga has the highest mean rating (4.81 stars), followed closely by running (4.80). Cycling workout has the lowest mean (4.64). The range between the highest and lowest genre means is less than 0.17 stars, so the chart shows modest differences rather than a large quality gap. Each app contributes one rating to its genre’s average, regardless of how many users rated it.</p>
